@@ -1,0 +1,1 @@
+hello Your Login Otp is {{$mailData['otp']}}
