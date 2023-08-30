@@ -17,4 +17,8 @@ class Notification extends Model
         'ref_id',
         'tamplate'
     ];
+
+    public function notificationType(){
+        return $this->belongsTo(NotificationType::class,'notification_type_id');
+    }
 }

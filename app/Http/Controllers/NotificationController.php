@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\NotificationType;
 use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,10 +14,10 @@ class NotificationController extends Controller
     
     public function notifications(){
         if(Auth::user()->user_role == 3){
-            $notificationList = Notification::all()->where('receiver_role_id',3);
+            $notificationList = Notification::with('notificationType')->get()->where('receiver_role_id',3)->sortByDesc('id');
             return response()->json($notificationList);
         }else{
-            $notificationList = Notification::all()->where('receiver_id',Auth::user()->id);
+            $notificationList = Notification::with('notificationType')->get()->where('receiver_id',Auth::user()->id)->sortByDesc('id');
             return response()->json($notificationList);
             
         }
@@ -75,5 +76,35 @@ class NotificationController extends Controller
         }else{
             return response()->json(['status'=>false,'message'=>'You are not logged in'],401);
         }
+    }
+
+    public function delete($id){
+
+    if(Notification::where('id',$id)->first()){
+        if(Auth::user()->user_role == 3){
+            $notification = Notification::where('id',$id)->where('receiver_role_id',3)->first();
+            if($notification){
+              $notification->delete();
+              return response()->json(['status'=>true,'message'=>'deleted'],200);
+          }else{
+                return response()->json(['status'=>false,'message'=>'No notification found with this id'],401);
+
+          }
+        }else{
+            $notification = Notification::where('id',$id)->where('receiver_id',Auth::user()->id)->first();
+            if($notification){
+                $notification->delete();
+                return response()->json(['status'=>true,'message'=>'deleted'],200);
+            }else{
+                return response()->json(['status'=>false,'message'=>'No notification found with this id'],401);
+
+            }
+
+        }
+    }else{
+        return response()->json(['status'=>false,'message'=>'No notification found with this id'],401);
+
+    }
+
     }
 }

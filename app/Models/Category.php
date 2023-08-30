@@ -9,4 +9,8 @@ class Category extends Model
 {
     use HasFactory;
     protected $fillable = ['creator_id','name','slug','is_approved'];
+
+    public function sub_categories(){
+        return $this->hasMany(SubCategory::class);
+    }
 }
