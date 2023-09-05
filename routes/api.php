@@ -33,12 +33,21 @@ Route::prefix('/vendor')->group(function (){
         Route::get('/data',[\App\Http\Controllers\VendorAuthController::class,'data']);
         Route::post('/category',[\App\Http\Controllers\CategoryController::class,'add']);
         Route::post('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'add']);
+        Route::post('/subsubcategory',[\App\Http\Controllers\SubSubCategoryController::class,'add']); //get all approved categories
+        Route::delete('/subsubcategory/{id}',[\App\Http\Controllers\SubSubCategoryController::class,'delete']);
         Route::delete('/subcategory/{id}',[\App\Http\Controllers\SubCategoryController::class,'delete']);
         Route::delete('/category/{id}',[\App\Http\Controllers\CategoryController::class,'delete']);
         Route::get('/category',[\App\Http\Controllers\CategoryController::class,'allCategories']); //get all approved categories
         Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'allSubCategories']); //get all approved categories
-        Route::resource('/variation',\App\Http\Controllers\VariationController::class);
-        Route::post('/product',[\App\Http\Controllers\ProductController::class,'addProduct']);
+        Route::post('/variation',[\App\Http\Controllers\VariationController::class,'store']);
+        Route::delete('/variation/{id}',[\App\Http\Controllers\VariationController::class,'delete']);
+        Route::get('/variation',[\App\Http\Controllers\VariationController::class,'all']);
+        Route::get('/variation/primary',[\App\Http\Controllers\VariationController::class,'primary']);
+        Route::get('/variation/secondary',[\App\Http\Controllers\VariationController::class,'secondary']);
+        Route::post('/product',[\App\Http\Controllers\ProductController::class,'store']);
+        Route::get('/product',[\App\Http\Controllers\ProductController::class,'vendorProducts']);
+        Route::post('/product/variation/option',[\App\Http\Controllers\ProductVariatioOptionController::class,'store']);
+
     });
  
         Route::middleware(['authLess'])->group(function(){
@@ -60,17 +69,19 @@ Route::prefix('/admin')->group(function (){
     });
     Route::middleware(['auth:api','admin','approvedAdmin'])->group(function(){
         Route::get('/data',[\App\Http\Controllers\AdminAuthcontroller::class,'data']);
-        Route::post('/approve-vendor/{vendor_id}',[\App\Http\Controllers\ApprovalController::class,'VendorApproval']);
+        Route::post('/vendor/approve/{vendor_id}',[\App\Http\Controllers\ApprovalController::class,'VendorApproval']);
         Route::post('/category',[\App\Http\Controllers\CategoryController::class,'add']);
         Route::post('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'add']);
         Route::delete('/subcategory/{id}',[\App\Http\Controllers\SubCategoryController::class,'delete']);
         Route::delete('/category/{id}',[\App\Http\Controllers\CategoryController::class,'delete']);
-        Route::post('/approve-category/{id}',[\App\Http\Controllers\CategoryController::class,'approve']);
-        Route::post('/approve-subcategory/{id}',[\App\Http\Controllers\SubCategoryController::class,'approve']);
+        Route::post('/category/approve/{id}',[\App\Http\Controllers\CategoryController::class,'approve']);
+        Route::post('/subcategory/approve/{id}',[\App\Http\Controllers\SubCategoryController::class,'approve']);
+        Route::post('/subsubcategory/approve/{id}',[\App\Http\Controllers\SubSubCategoryController::class,'approve']);
         Route::get('/category',[\App\Http\Controllers\CategoryController::class,'allCategories']); //get all approved categories
         Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'allSubCategories']); //get all approved categories
-        Route::post('/approve-product/{id}',[\App\Http\Controllers\ProductController::class,'approveProduct']);
-
+        Route::post('/subsubcategory',[\App\Http\Controllers\SubSubCategoryController::class,'add']); //get all approved categories
+        Route::delete('/subsubcategory/{id}',[\App\Http\Controllers\SubSubCategoryController::class,'delete']);
+        Route::post('/product/approve/{id}',[\App\Http\Controllers\ProductController::class,'approve']);
     });
     Route::middleware(['authLess'])->group(function(){
         Route::post('/send-register-otp',[\App\Http\Controllers\AdminAuthcontroller::class,'sendOtp']);

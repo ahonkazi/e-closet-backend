@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vendor_id')->constrained('users');
             $table->string('name');
-            $table->string('code');
+            $table->foreignId('vendor_id')->constrained('users');
+            $table->boolean('is_primary');
             $table->timestamps();
         });
     }

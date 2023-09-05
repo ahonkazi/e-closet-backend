@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class VariationStoreRequest extends FormRequest
+class VariationStorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,13 +25,14 @@ class VariationStoreRequest extends FormRequest
     {
         return [
             //
-            'name'=>'required|string|max:20'
+            'name'=>'required|string|max:50|min:2',
+            'is_primary'=>'required|boolean'
         ];
     }
-          public function failedValidation(Validator $validator)
-          {
-              $data = ['message'=>'Validation Error',
+           public function failedValidation(Validator $validator)
+           {
+               $data = ['message'=>'Validation Error',
                     'errors'=>$validator->errors()];
-              throw new HttpResponseException(response()->json($data,401));       
-          }
+               throw new HttpResponseException(response()->json($data,401));       
+           }
 }

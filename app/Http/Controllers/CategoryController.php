@@ -6,6 +6,7 @@ use App\Http\Requests\AddCategoryRequest;
 use App\Models\Category;
 use App\Models\Notification;
 use App\Models\SubCategory;
+use App\Models\SubSubCategory;
 use App\Models\UserDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -127,11 +128,11 @@ class CategoryController extends Controller
         }
     }
     public function categories(){
-        return response()->json(['status'=>true,'data'=>Category::with('sub_categories')->get()->where('is_approved',true)],200);
+        return response()->json(['status'=>true,'data'=>Category::with('sub_categories.subSubCategory')->get()->where('is_approved',true)],200);
     }
 
     public function allCategories(){
-        return response()->json(['status'=>true,'data'=>Category::with('sub_categories')->get()],200);
+        return response()->json(['status'=>true,'data'=>Category::with('sub_categories.subSubCategory')->get()],200);
 
     }
 }

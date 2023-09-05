@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_variations', function (Blueprint $table) {
+        Schema::create('sub_sub_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vendor_id')->constrained('users');
-            $table->foreignId('variation_id')->constrained('variations');
-            $table->foreignId('product_id')->constrained('products');
-            $table->foreignId('image_id')->constrained('media');
+            $table->foreignId('subcategory_id')->constrained('sub_categories');
+            $table->foreignId('creator_id')->constrained('users');
             $table->string('name');
-            $table->string('code');
+            $table->string('slug');
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_variations');
+        Schema::dropIfExists('sub_sub_categories');
     }
 };
