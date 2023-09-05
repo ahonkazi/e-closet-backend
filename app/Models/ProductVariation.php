@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductVariationOption extends Model
+class ProductVariation extends Model
 {
     use HasFactory;
-    protected $fillable =['product_id','vendor_id','product_variation_id','value'];
+    protected $fillable =['product_id','vendor_id','variation_id','is_primary'];
+    
 }

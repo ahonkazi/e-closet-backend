@@ -47,6 +47,7 @@ Route::prefix('/vendor')->group(function (){
         Route::post('/product',[\App\Http\Controllers\ProductController::class,'store']);
         Route::get('/product',[\App\Http\Controllers\ProductController::class,'vendorProducts']);
         Route::post('/product/variation/option',[\App\Http\Controllers\ProductVariatioOptionController::class,'store']);
+        Route::get('/product/{id}/variation/option/primary',[\App\Http\Controllers\ProductVariatioOptionController::class,'primary']);
 
     });
  
