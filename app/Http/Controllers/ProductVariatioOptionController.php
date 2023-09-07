@@ -22,11 +22,14 @@ class ProductVariatioOptionController extends Controller
         if(is_array($datas) && count($datas) == 2 ){
             for($i =0;$i < count($datas);$i++){
                 if(($datas[$i]["variation_id"]??null) && ($datas[$i]["product_id"]??null) && ($datas[$i]["values"]??null)){
-                    $is_ok = true;
-                    if(Product::where('id',$datas[$i]['product_id'])->where('vendor_id',Auth::user()->id)->first()){
-                        $variation =Variation::where('id',$datas[$i]['variation_id'])->where('vendor_id',Auth::user()->id)->first();
-                        array_push($variation_Types,$variation->is_primary);
+                    if(Variation::where('id',$datas[$i]["variation_id"])->where('vendor_id',Auth::user()->id)->first() && Product::where('id',$datas[$i]["product_id"])->where('vendor_id',Auth::user()->id)->first() ){
+                        $is_ok = true;
+                        if(Product::where('id',$datas[$i]['product_id'])->where('vendor_id',Auth::user()->id)->first()){
+                            $variation =Variation::where('id',$datas[$i]['variation_id'])->where('vendor_id',Auth::user()->id)->first();
+                            array_push($variation_Types,$variation->is_primary);
+                        }
                     }
+
                 }else{
                     $is_ok = false;
                 }
@@ -36,7 +39,7 @@ class ProductVariatioOptionController extends Controller
             
         }
         
-        if($is_ok && ($variation_Types[0] != $variation_Types[1])){
+        if($is_ok && count($variation_Types)==2 && ($variation_Types[0] != $variation_Types[1])){
 
 
             for($i =0;$i < count($datas);$i++){
@@ -149,19 +152,19 @@ class ProductVariatioOptionController extends Controller
   
     }
 
-//        public function primary(){
-//        return response()->json(['status'=>true,'data'=>Variation::select('id','name')->where('vendor_id',Auth::user()->id)->where('is_primary',1)->get()],200);
-//    }
-//       public function secondary(){
-//        return response()->json(['status'=>true,'data'=>Variation::select('id','name')->where('vendor_id',Auth::user()->id)->where('is_primary',0)->get()],200);
-//    }
-
       public function primary($id){
         $product = Product::where('id',$id)->where('vendor_id',Auth::user()->id)->first();
         if($product){
-            $options = ProductVariationOption::where('vendor_id',Auth::user()->id)->where('product_id',$product->id);
-            return "ok";
+            $options = ProductVariation::with(['options','variation:id,name'])->where('vendor_id',Auth::user()->id)->where('product_id',$product->id)->where('is_primary',true)->get();
+            return $options;
+        }
+    }
 
+          public function secondary($id){
+        $product = Product::where('id',$id)->where('vendor_id',Auth::user()->id)->first();
+        if($product){
+            $options = ProductVariation::with(['options','variation:id,name'])->where('vendor_id',Auth::user()->id)->where('product_id',$product->id)->where('is_primary',false)->get();
+            return $options;
         }
     }
 }

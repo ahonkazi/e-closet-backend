@@ -240,7 +240,5 @@ class VendorAuthController extends Controller
          return response()->json(['status'=>true,'message'=>'Logut successfull']);
      }
      
-     public function data(){
-         return 'ok';
-     }
+
 }

@@ -20,6 +20,9 @@ Route::prefix('/public')->group(function (){
     Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'subCategories']); //get approved categories
 });
 
+
+
+//VENDOR
 Route::prefix('/vendor')->group(function (){
     
     Route::middleware(['auth:api','vendor'])->group(function(){
@@ -30,7 +33,7 @@ Route::prefix('/vendor')->group(function (){
         Route::post('/unread-notification/{id}',[\App\Http\Controllers\NotificationController::class,'unReadNotification']);
     });
     Route::middleware(['auth:api','vendor','approvedVendor'])->group(function(){
-        Route::get('/data',[\App\Http\Controllers\VendorAuthController::class,'data']);
+//        CATEGORIES AND SUB CATEGORIES START
         Route::post('/category',[\App\Http\Controllers\CategoryController::class,'add']);
         Route::post('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'add']);
         Route::post('/subsubcategory',[\App\Http\Controllers\SubSubCategoryController::class,'add']); //get all approved categories
@@ -39,15 +42,29 @@ Route::prefix('/vendor')->group(function (){
         Route::delete('/category/{id}',[\App\Http\Controllers\CategoryController::class,'delete']);
         Route::get('/category',[\App\Http\Controllers\CategoryController::class,'allCategories']); //get all approved categories
         Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'allSubCategories']); //get all approved categories
+//        CATEGORIES AND SUB CATEGORIES END
+
+//        VARIATIONS START
         Route::post('/variation',[\App\Http\Controllers\VariationController::class,'store']);
         Route::delete('/variation/{id}',[\App\Http\Controllers\VariationController::class,'delete']);
         Route::get('/variation',[\App\Http\Controllers\VariationController::class,'all']);
         Route::get('/variation/primary',[\App\Http\Controllers\VariationController::class,'primary']);
         Route::get('/variation/secondary',[\App\Http\Controllers\VariationController::class,'secondary']);
+        // VARIATIONS END
+
+        // PRODUCT START
         Route::post('/product',[\App\Http\Controllers\ProductController::class,'store']);
         Route::get('/product',[\App\Http\Controllers\ProductController::class,'vendorProducts']);
         Route::post('/product/variation/option',[\App\Http\Controllers\ProductVariatioOptionController::class,'store']);
         Route::get('/product/{id}/variation/option/primary',[\App\Http\Controllers\ProductVariatioOptionController::class,'primary']);
+        Route::get('/product/{id}/variation/option/secondary',[\App\Http\Controllers\ProductVariatioOptionController::class,'secondary']);
+        // PRODUCT END
+
+        // PRODUCT STOCK START
+        Route::post('/product/{id}/stock',[\App\Http\Controllers\ProductStockController::class,'store']);
+        Route::get('/product/{id}/stock',[\App\Http\Controllers\ProductStockController::class,'index']);
+
+        // PRODUCT STOCK END
 
     });
  
@@ -59,6 +76,11 @@ Route::prefix('/vendor')->group(function (){
         });
 });
 
+
+
+
+
+//ADMIN
 Route::prefix('/admin')->group(function (){
     Route::middleware(['auth:api','admin'])->group(function(){
         Route::post('/logout',[\App\Http\Controllers\AdminAuthcontroller::class,'logout']);
