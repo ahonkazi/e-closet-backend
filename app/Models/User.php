@@ -25,7 +25,8 @@ class User extends Authenticatable
         'profile_pic',
         'two_step_verification',
         'user_role',
-        'is_approved'
+        'is_approved',
+        'unique_id'
     ];
 
     /**

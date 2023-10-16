@@ -7,6 +7,7 @@ use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegistrationRequest;
 use App\Mail\LoginOtpMail;
 use App\Mail\RegisterOtpMail;
+use App\Models\Login;
 use App\Models\LoginOtp;
 use App\Models\Notification;
 use App\Models\RegisterOtp;
@@ -76,9 +77,18 @@ class AdminAuthcontroller extends Controller
                             'email'=>$request->email,
                             'password'=>Hash::make($request->password),
                             'profile_pic'=>'/storage/images/'.$fileName,
-                            'user_role'=>3
+                            'user_role'=>3,
+                            'unique_id'=>random_int(11111,99999).time(),
 
-            ]);
+                        ]);
+                        $userAgent = new \Jenssegers\Agent\Agent();
+                        $loginDetails = Login::create([
+                            'ip'=>$request->ip(),
+                            'browser'=>$userAgent->browser(),
+                            'platform'=>$userAgent->platform(),
+                            'version'=>$userAgent->version($userAgent->platform()),
+                            'user_id'=>$user->id,
+                    ]);
                         if($user){
 
                           $userdetails =   UserDetails::create([
@@ -92,7 +102,7 @@ class AdminAuthcontroller extends Controller
                   
                           $ganderPerson = Str::lower(UserDetails::where('user_id',$user->id)->first()->gander) == 'male'?'his':'her';
                           $notification = Notification::create([
-                              'notification_type_id'=>1,
+                              'notification_type_id'=>2,
                               'from_id'=>$user->id,
                               'receiver_id'=>null,
                               'receiver_role_id'=>3,

@@ -28,6 +28,7 @@ class CategoryController extends Controller
                             'creator_id'=>Auth::user()->id,
                 'name'=>ucfirst($request->name),
                 'slug'=>Str::slug($request->slug),
+                'icon_id'=>$request->icon_id,
            ]);
                         $ganderPerson = Str::lower(UserDetails::where('user_id',Auth::user()->id)->first()->gander) == 'male'?'his':'her';
                         $notification = Notification::create([
@@ -128,11 +129,11 @@ class CategoryController extends Controller
         }
     }
     public function categories(){
-        return response()->json(['status'=>true,'data'=>Category::with('sub_categories.subSubCategory')->get()->where('is_approved',true)],200);
+        return response()->json(['status'=>true,'data'=>Category::with('sub_categories.subSubCategory','icon')->get()->where('is_approved',true)],200);
     }
 
     public function allCategories(){
-        return response()->json(['status'=>true,'data'=>Category::with('sub_categories.subSubCategory')->get()],200);
+        return response()->json(['status'=>true,'data'=>Category::with('sub_categories.subSubCategory','icon')->get()],200);
 
     }
 }

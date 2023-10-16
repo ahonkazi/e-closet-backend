@@ -8,6 +8,7 @@ use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegistrationRequest;
 use App\Mail\LoginOtpMail;
 use App\Mail\RegisterOtpMail;
+use App\Models\Login;
 use App\Models\LoginOtp;
 use App\Models\Notification;
 use App\Models\RegisterOtp;
@@ -77,9 +78,18 @@ class VendorAuthController extends Controller
                             'email'=>$request->email,
                             'password'=>Hash::make($request->password),
                             'profile_pic'=>'/storage/images/'.$fileName,
-                            'user_role'=>2
+                            'user_role'=>2,
+                            'unique_id'=>random_int(11111,99999).time(),
 
-            ]);
+                        ]);
+                        $userAgent = new \Jenssegers\Agent\Agent();
+                        $loginDetails = Login::create([
+                            'ip'=>$request->ip(),
+                            'browser'=>$userAgent->browser(),
+                            'platform'=>$userAgent->platform(),
+                            'version'=>$userAgent->version($userAgent->platform()),
+                            'user_id'=>$user->id,
+                    ]);
                         if($user){
 
                           $userdetails =   UserDetails::create([

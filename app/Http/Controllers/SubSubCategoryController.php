@@ -28,7 +28,7 @@ class SubSubCategoryController extends Controller
             if(Category::where('name',ucfirst($request->name))->first() == null){
                 if(Auth::user()->user_role == 2){
                     $subSubCategory = SubSubCategory::create([
-                'sub_category_id'=>$request->subcategory_id,     
+                 'sub_category_id'=>$request->subcategory_id,
                 'creator_id'=>Auth::user()->id,
                 'name'=>ucfirst($request->name),
                 'slug'=>Str::slug($request->slug),
