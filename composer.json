@@ -9,6 +9,7 @@
         "alajusticia/laravel-auth-tracker": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
         "jenssegers/agent": "^2.6",
+        "laravel-validation-rules/colour": "^1.7",
         "laravel/framework": "^10.10",
         "laravel/passport": "^11.8",
         "laravel/sanctum": "^3.2",

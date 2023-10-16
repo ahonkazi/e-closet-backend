@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6104dc1cf449a851db8d570991499249",
+    "content-hash": "9f5eb3d7a442f4a4f33f09a48a63d658",
     "packages": [
         {
             "name": "alajusticia/laravel-auth-tracker",
@@ -1351,6 +1351,59 @@
                 }
             ],
             "time": "2020-06-13T08:05:20+00:00"
+        },
+        {
+            "name": "laravel-validation-rules/colour",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-validation-rules/colour.git",
+                "reference": "41d55df1bda5009436de32f49a07e3d829643204"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-validation-rules/colour/zipball/41d55df1bda5009436de32f49a07e3d829643204",
+                "reference": "41d55df1bda5009436de32f49a07e3d829643204",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^5.5|^6.0|^7.0|^8.0|^9.0|^10.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0|^7.0|^8.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LVR\\Colour\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ashley Clarke",
+                    "email": "me@ashleyclarke.me"
+                },
+                {
+                    "name": "Scott Robinson",
+                    "email": "scott@dor.ky"
+                }
+            ],
+            "description": "Validate colours",
+            "keywords": [
+                "colour",
+                "laravel",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel-validation-rules/colour/issues",
+                "source": "https://github.com/laravel-validation-rules/colour/tree/1.7.0"
+            },
+            "time": "2023-02-15T15:19:08+00:00"
         },
         {
             "name": "laravel/framework",

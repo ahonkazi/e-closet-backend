@@ -42,7 +42,7 @@ class UserRegistrationRequest extends FormRequest
         {
             $data = ['message'=>'Validation Error',
                     'errors'=>$validator->errors()];
-            throw new HttpResponseException(response()->json($data,401));       
+            throw new HttpResponseException(response()->json($data,403));       
         }
 
 }

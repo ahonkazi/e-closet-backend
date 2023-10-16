@@ -44,21 +44,29 @@ Route::prefix('/vendor')->group(function (){
         Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'allSubCategories']); //get all approved categories
 //        CATEGORIES AND SUB CATEGORIES END
 
+        // PRODUCT START
+        Route::post('/product',[\App\Http\Controllers\ProductController::class,'store']);
+        Route::get('/product',[\App\Http\Controllers\ProductController::class,'vendorProducts']);
+        // PRODUCT END
+
 //        VARIATIONS START
         Route::post('/variation',[\App\Http\Controllers\VariationController::class,'store']);
         Route::delete('/variation/{id}',[\App\Http\Controllers\VariationController::class,'delete']);
         Route::get('/variation',[\App\Http\Controllers\VariationController::class,'all']);
         Route::get('/variation/primary',[\App\Http\Controllers\VariationController::class,'primary']);
         Route::get('/variation/secondary',[\App\Http\Controllers\VariationController::class,'secondary']);
+//      <------------product variation---------->
+        Route::post('/product/{product_id}/variation',[\App\Http\Controllers\ProductVariationController::class,'add']);
+        Route::get('/product/{product_id}/variation/primary',[\App\Http\Controllers\ProductVariationController::class,'primary']);
+        Route::get('/product/{product_id}/variation/secondary',[\App\Http\Controllers\ProductVariationController::class,'secondary']);
+
+        Route::post('/product/{product_id}/variation/option',[\App\Http\Controllers\ProductVariatioOptionController::class,'store']);
+        Route::get('/product/{product_id}/variation/option/primary',[\App\Http\Controllers\ProductVariatioOptionController::class,'primary']);
+        Route::get('/product/{product_id}/variation/option/secondary',[\App\Http\Controllers\ProductVariatioOptionController::class,'secondary']);
+
         // VARIATIONS END
 
-        // PRODUCT START
-        Route::post('/product',[\App\Http\Controllers\ProductController::class,'store']);
-        Route::get('/product',[\App\Http\Controllers\ProductController::class,'vendorProducts']);
-        Route::post('/product/variation/option',[\App\Http\Controllers\ProductVariatioOptionController::class,'store']);
-        Route::get('/product/{id}/variation/option/primary',[\App\Http\Controllers\ProductVariatioOptionController::class,'primary']);
-        Route::get('/product/{id}/variation/option/secondary',[\App\Http\Controllers\ProductVariatioOptionController::class,'secondary']);
-        // PRODUCT END
+
 
         // PRODUCT STOCK START
         Route::post('/product/{id}/stock',[\App\Http\Controllers\ProductStockController::class,'store']);

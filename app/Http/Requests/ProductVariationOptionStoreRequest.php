@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use LVR\Colour\Hex;
 
-class SubSubCategoryStorRequest extends FormRequest
+class ProductVariationOptionStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,16 +25,16 @@ class SubSubCategoryStorRequest extends FormRequest
     {
         return [
             //
-            'name'=>'required|string|max:50|min:3',
-            'slug'=>'required|string|max:100|min:3',
-            'subcategory_id'=>'required|numeric'
+            'product_variation_id'=>'required|numeric',
+            'value'=>'string|required',
+            'color_code'=>['nullable', new Hex()],
+            'product_image'=>'nullable|image|dimensions:width=542,height=542'
         ];
     }
-    
-           public function failedValidation(Validator $validator)
-           {
-               $data = ['message'=>'Validation Error',
+       public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+       {
+           $data = ['message'=>'Validation Error',
         'errors'=>$validator->errors()];
-               throw new HttpResponseException(response()->json($data,403));       
-           }
+           throw new HttpResponseException(response()->json($data,403));       
+       }
 }
