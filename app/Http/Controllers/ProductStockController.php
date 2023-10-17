@@ -75,10 +75,10 @@ public function store(ProductStockStoreRequest $request,$product_id){
         return response()->json(['status'=>false,'message'=>'No Product Found'],404);
     }
 }
-    public function index($id){
-        $product = Product::where('id',$id)->where('vendor_id',Auth::user()->id)->first();
+    public function index($product_id){
+    $product = Product::where('id',$product_id)->where('vendor_id',Auth::user()->id)->first();
         if($product){
-            return response()->json(['status'=>true,'data'=>ProductStock::with('primary_option:id,value','secondary_option:id,value')->where('product_id',$product->id)->where('vendor_id',Auth::user()->id)->get()],200);
+            return response()->json(['status'=>true,'data'=>ProductStock::with('primary_option:id,value','secondary_option:id,value,color_code,product_image')->where('product_id',$product->id)->where('vendor_id',Auth::user()->id)->get()],200);
         }        
     }
 }

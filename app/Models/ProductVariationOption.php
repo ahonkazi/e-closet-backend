@@ -9,4 +9,7 @@ class ProductVariationOption extends Model
 {
     use HasFactory;
     protected $fillable =['product_id','vendor_id','product_variation_id','value','product_image','color_code','is_primary'];
+public function productVariation(){
+    return $this->belongsTo(ProductVariation::class);
+}
 }
