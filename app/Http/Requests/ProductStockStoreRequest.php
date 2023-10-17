@@ -30,7 +30,6 @@ class ProductStockStoreRequest extends FormRequest
             'price'=>'required|numeric',
             'discount_in_percent'=>'required|numeric',
             'stock'=>'required|numeric',
-            'image'=>'required|image|dimensions:width=300,height=439'
             
         ];
     }

@@ -69,8 +69,8 @@ Route::prefix('/vendor')->group(function (){
 
 
         // PRODUCT STOCK START
-        Route::post('/product/{id}/stock',[\App\Http\Controllers\ProductStockController::class,'store']);
-        Route::get('/product/{id}/stock',[\App\Http\Controllers\ProductStockController::class,'index']);
+        Route::post('/product/{product_id}/stock',[\App\Http\Controllers\ProductStockController::class,'store']);
+//        Route::get('/product/{id}/stock',[\App\Http\Controllers\ProductStockController::class,'index']);
 
         // PRODUCT STOCK END
 
