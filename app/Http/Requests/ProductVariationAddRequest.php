@@ -31,6 +31,6 @@ class ProductVariationAddRequest extends FormRequest
         {
             $data = ['message'=>'Validation Error',
         'errors'=>$validator->errors()];
-            throw new HttpResponseException(response()->json($data,403));       
+            throw new HttpResponseException(response()->json($data,400));
         }
 }

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductImageUpdateRequest;
 use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductEditRequest;
 use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Product;
 use App\Models\SubCategory;
 use App\Models\UserDetails;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -89,4 +92,66 @@ class ProductController extends Controller
         $data = Product::with('category','sub_category','sub_sub_category')->where('vendor_id',$user_id)->get();
         return response()->json(['status'=>true,'total_product'=>count($data),'data'=>$data]);
     }
+    public function detailsEdit(ProductEditRequest $request,$product_id){
+        $user_id = Auth::user()->id;
+        $product = Product::where('id',$product_id)->where('vendor_id',$user_id)->first();
+        if($product){
+        $updatedProduct = $product->update([
+        'title'=>$request->title,
+        'discription'=>$request->discription,
+      ]);
+        if($updatedProduct){
+            return response()->json(['status'=>true,'message'=>'Product Updated','data'=>$product],200);
+
+        }else{
+            return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+
+        }
+        }else{
+            return response()->json(['status'=>false,'message'=>'Product Not found'],404);
+
+        }
+    }
+    public function changeProductImage(ProductImageUpdateRequest $request,$product_id){
+        $user_id = Auth::user()->id;
+        $product = Product::where('id',$product_id)->where('vendor_id',$user_id)->first();
+        if($product){
+            $oldImagePath = $product->product_image;
+            $fullpath = storage_path('app/public/'.explode('/storage/',$oldImagePath)[1]);
+            $image = $request->file('product_image');
+            $fileName = 'ecloset_pd_img'.random_int(1111,9999).time().'.'.$image->getClientOriginalExtension();
+            $uploadStatus = $image->storeAs('images',$fileName,'public');
+            if($uploadStatus){
+                $status = $product->update([
+                    'product_image'=>'/storage/images/'.$fileName
+                ]);
+                if($status){
+                      unlink($fullpath);
+                      return response()->json(['status'=>true,'message'=>'updated image','data'=>$product],200);
+
+                }else{
+                    return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+
+                }
+            }else{
+                return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+
+            }
+        }else{
+            return response()->json(['status'=>false,'message'=>'Product Not found'],404);
+
+        }
+    }
+//public function deleteSample(){
+//        $oldPath = "app/public/images/ecloset_img20251693281225.jpg";
+//        $imgName = explode('/storage/',$oldPath)[1];
+//        $fullPath = storage_path($oldPath);
+//
+//            $status = unlink($fullPath);
+//            if($status){
+//                return 'ok';
+//            }
+//
+////        return $fullPath;
+//    }
 }

@@ -47,6 +47,8 @@ Route::prefix('/vendor')->group(function (){
         // PRODUCT START
         Route::post('/product',[\App\Http\Controllers\ProductController::class,'store']);
         Route::get('/product',[\App\Http\Controllers\ProductController::class,'vendorProducts']);
+        Route::put('/product/{product_id}',[\App\Http\Controllers\ProductController::class,'detailsEdit']);
+        Route::post('/product/{product_id}/changeimage',[\App\Http\Controllers\ProductController::class,'changeProductImage']);
         // PRODUCT END
 
 //        VARIATIONS START
@@ -71,8 +73,18 @@ Route::prefix('/vendor')->group(function (){
         // PRODUCT STOCK START
         Route::post('/product/{product_id}/stock',[\App\Http\Controllers\ProductStockController::class,'store']);
         Route::get('/product/{product_id}/stock',[\App\Http\Controllers\ProductStockController::class,'index']);
-
         // PRODUCT STOCK END
+        //    PRODUCT SPESIFICATIONS START
+        Route::post('/product/{product_id}/specification',[\App\Http\Controllers\ProductSpecificationcontroller::class,'add']);
+        Route::delete('/product/{product_id}/specification/{specification_id}',[\App\Http\Controllers\ProductSpecificationcontroller::class,'remove']);
+        Route::get('/product/{product_id}/specification',[\App\Http\Controllers\ProductSpecificationcontroller::class,'index']);
+        //    PRODUCT SPESIFICATIONS END
+
+        //    PRODUCT FEATURES START
+        Route::post('/product/{product_id}/feature',[\App\Http\Controllers\ProductFeatureController::class,'add']);
+        Route::delete('/product/{product_id}/feature/{feature_id}',[\App\Http\Controllers\ProductFeatureController::class,'remove']);
+        Route::get('/product/{product_id}/feature',[\App\Http\Controllers\ProductFeatureController::class,'index']);
+        //    PRODUCT FEATURES END
 
     });
  
