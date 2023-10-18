@@ -50,7 +50,6 @@ Route::prefix('/vendor')->group(function (){
         Route::put('/product/{product_id}',[\App\Http\Controllers\ProductController::class,'detailsEdit']);
         Route::post('/product/{product_id}/changeimage',[\App\Http\Controllers\ProductController::class,'changeProductImage']);
         // PRODUCT END
-
 //        VARIATIONS START
         Route::post('/variation',[\App\Http\Controllers\VariationController::class,'store']);
         Route::delete('/variation/{id}',[\App\Http\Controllers\VariationController::class,'delete']);
@@ -61,12 +60,16 @@ Route::prefix('/vendor')->group(function (){
         Route::post('/product/{product_id}/variation',[\App\Http\Controllers\ProductVariationController::class,'add']);
         Route::get('/product/{product_id}/variation/primary',[\App\Http\Controllers\ProductVariationController::class,'primary']);
         Route::get('/product/{product_id}/variation/secondary',[\App\Http\Controllers\ProductVariationController::class,'secondary']);
-
         Route::post('/product/{product_id}/variation/option',[\App\Http\Controllers\ProductVariatioOptionController::class,'store']);
         Route::get('/product/{product_id}/variation/option/primary',[\App\Http\Controllers\ProductVariatioOptionController::class,'primary']);
         Route::get('/product/{product_id}/variation/option/secondary',[\App\Http\Controllers\ProductVariatioOptionController::class,'secondary']);
-
         // VARIATIONS END
+        // PRODUCT TAGS START
+        Route::post('/product/{product_id}/tag',[\App\Http\Controllers\ProductTagController::class,'add']);
+        Route::delete('/product/{product_id}/tag/{tag_id}',[\App\Http\Controllers\ProductTagController::class,'remove']);
+        Route::get('/product/{product_id}/tag',[\App\Http\Controllers\ProductTagController::class,'index']);
+        
+        // PRODUCT TAGS END
 
 
 
