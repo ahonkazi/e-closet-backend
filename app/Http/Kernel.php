@@ -7,6 +7,7 @@ use App\Http\Middleware\AuthLess;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\CheckAdminMiddleware;
 use App\Http\Middleware\CheckVendor;
+use App\Http\Middleware\customerMiddleware;
 use App\Http\Middleware\IsApprovedAdminMiddleware;
 use App\Http\Middleware\IsApproveVendor;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -76,6 +77,8 @@ class Kernel extends HttpKernel
         'admin'=>CheckAdminMiddleware::class,
         'approvedAdmin'=>IsApprovedAdminMiddleware::class,
         'authLess'=>AuthLess::class,
+        'customer'=>customerMiddleware::class,
+
 
     ];
 }

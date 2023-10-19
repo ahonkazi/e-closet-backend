@@ -210,6 +210,14 @@ class VendorAuthController extends Controller
                                  if(time() - $otpItem->created_at->timestamp < 150){
                                      $token = $user->createToken('accessToken')->accessToken;
                                      $data = ['token'=>$token,'user'=>$user];
+                                     $userAgent = new \Jenssegers\Agent\Agent();
+                                     $loginDetails = Login::create([
+                                         'ip'=>$request->ip(),
+                            'browser'=>$userAgent->browser(),
+                            'platform'=>$userAgent->platform(),
+                            'version'=>$userAgent->version($userAgent->platform()),
+                            'user_id'=>$user->id,
+                    ]);
                                      return response()->json(['status'=>true,'message'=>'Logged in Successfull','data'=>$data],200);
                                  }else{
                                      return response()->json(['status'=>false,'message'=>'Otp Expired'],401);
@@ -229,6 +237,14 @@ class VendorAuthController extends Controller
                      }else{
                          $token = $user->createToken('accessToken')->accessToken;
                          $data = ['token'=>$token,'user'=>$user];
+                         $userAgent = new \Jenssegers\Agent\Agent();
+                         $loginDetails = Login::create([
+                             'ip'=>$request->ip(),
+                            'browser'=>$userAgent->browser(),
+                            'platform'=>$userAgent->platform(),
+                            'version'=>$userAgent->version($userAgent->platform()),
+                            'user_id'=>$user->id,
+                    ]);
                          return response()->json(['status'=>true,'message'=>'Logged in Successfull','data'=>$data],200);
                      }
                  }else{

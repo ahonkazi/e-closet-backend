@@ -24,7 +24,6 @@ Route::prefix('/public')->group(function (){
 
 //VENDOR
 Route::prefix('/vendor')->group(function (){
-    
     Route::middleware(['auth:api','vendor'])->group(function(){
         Route::post('/logout',[\App\Http\Controllers\VendorAuthController::class,'logout']);
         Route::get('/notification',[\App\Http\Controllers\NotificationController::class,'notifications']);
@@ -98,11 +97,6 @@ Route::prefix('/vendor')->group(function (){
             Route::post('/login',[\App\Http\Controllers\VendorAuthController::class,'login']);
         });
 });
-
-
-
-
-
 //ADMIN
 Route::prefix('/admin')->group(function (){
     Route::middleware(['auth:api','admin'])->group(function(){
@@ -138,5 +132,21 @@ Route::prefix('/admin')->group(function (){
         Route::post('/send-login-otp',[\App\Http\Controllers\AdminAuthcontroller::class,'sendLoginOtp']);
         Route::post('/register',[\App\Http\Controllers\AdminAuthcontroller::class,'register']);
         Route::post('/login',[\App\Http\Controllers\AdminAuthcontroller::class,'login']);
+    });
+});
+//CUSTOMER
+Route::prefix('/customer')->group(function (){
+    Route::middleware(['auth:api','customer'])->group(function(){
+        Route::post('/logout',[\App\Http\Controllers\CustomerAuthController::class,'logout']);
+        Route::get('/notification',[\App\Http\Controllers\NotificationController::class,'notifications']);
+        Route::delete('/notification/{id}',[\App\Http\Controllers\NotificationController::class,'delete']);
+        Route::post('/read-notification/{id}',[\App\Http\Controllers\NotificationController::class,'readNotification']);
+        Route::post('/unread-notification/{id}',[\App\Http\Controllers\NotificationController::class,'unReadNotification']);
+    });
+    Route::middleware(['authLess'])->group(function(){
+        Route::post('/send-register-otp',[\App\Http\Controllers\CustomerAuthController::class,'sendOtp']);
+        Route::post('/send-login-otp',[\App\Http\Controllers\CustomerAuthController::class,'sendLoginOtp']);
+        Route::post('/register',[\App\Http\Controllers\CustomerAuthController::class,'register']);
+        Route::post('/login',[\App\Http\Controllers\CustomerAuthController::class,'login']);
     });
 });

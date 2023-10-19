@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthGuard
+class customerMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,13 +16,14 @@ class AuthGuard
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        if(Auth::user()){
-            return $next($request);
-
-        }else{
-            return response()->json(['message'=>'You are not logged in','status'=>false],401);
-
-        }
+if(Auth::user()){
+    if(Auth::user()->user_role ==  1){
+        return $next($request);
+    }else{
+        return response()->json(['message'=>'You are not a customer','status'=>false]);
     }
+}else{
+    return response()->json(['message'=>'You are not logged in','status'=>false]);
+
+}    }
 }
