@@ -23,7 +23,7 @@ use Laravel\Passport\RefreshToken;
 use Laravel\Passport\Token;
 class AdminAuthcontroller extends Controller
 {
-    //
+    // 
      public function sendOtp(RegisterOtpRequest $request){
          $otp = random_int(111111,999999);
          $data = ['otp'=>$otp];

@@ -28,7 +28,7 @@ class ProductTagController extends Controller
                     if($productTag){
                         return response()->json(['status'=>true,'message'=>'added '.$request->name,'data'=>$productTag],200);
                     }else{
-                        return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+                        return response()->json(['status'=>false,'message'=>'Something went wrong'],500);
                     }        
                 }
             
@@ -39,10 +39,10 @@ class ProductTagController extends Controller
                     if($productTag){
                         return response()->json(['status'=>true,'message'=>'added '.$request->name,'data'=>$productTag],200);
                     }else{
-                        return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+                        return response()->json(['status'=>false,'message'=>'Something went wrong'],500);
                     } 
                 }else{
-                    return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+                    return response()->json(['status'=>false,'message'=>'Something went wrong'],500);
                     
                 }
 
@@ -63,7 +63,7 @@ class ProductTagController extends Controller
                     return response()->json(['status'=>true,'message'=>'removed'],200);
                     
                 }else{
-                    return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+                    return response()->json(['status'=>false,'message'=>'Something went wrong'],500);
                     
                 }
             }else{

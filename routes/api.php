@@ -30,6 +30,10 @@ Route::prefix('/vendor')->group(function (){
         Route::delete('/notification/{id}',[\App\Http\Controllers\NotificationController::class,'delete']);
         Route::post('/read-notification/{id}',[\App\Http\Controllers\NotificationController::class,'readNotification']);
         Route::post('/unread-notification/{id}',[\App\Http\Controllers\NotificationController::class,'unReadNotification']);
+        Route::post('/change-email-otp',[\App\Http\Controllers\SecurityController::class,'changeEmailOtp']);
+        Route::post('/change-password',[\App\Http\Controllers\SecurityController::class,'changePassword']);
+        Route::post('/change-email',[\App\Http\Controllers\SecurityController::class,'changeUserEmail']);
+
     });
     Route::middleware(['auth:api','vendor','approvedVendor'])->group(function(){
 //        CATEGORIES AND SUB CATEGORIES START
@@ -105,6 +109,9 @@ Route::prefix('/admin')->group(function (){
         Route::delete('/notification/{id}',[\App\Http\Controllers\NotificationController::class,'delete']);
         Route::post('/read-notification/{id}',[\App\Http\Controllers\NotificationController::class,'readNotification']);
         Route::post('/unread-notification/{id}',[\App\Http\Controllers\NotificationController::class,'unReadNotification']);
+        Route::post('/change-email-otp',[\App\Http\Controllers\SecurityController::class,'changeEmailOtp']);
+        Route::post('/change-password',[\App\Http\Controllers\SecurityController::class,'changePassword']);
+        Route::post('/change-email',[\App\Http\Controllers\SecurityController::class,'changeUserEmail']);
         
     });
     Route::middleware(['auth:api','admin','approvedAdmin'])->group(function(){
@@ -142,6 +149,10 @@ Route::prefix('/customer')->group(function (){
         Route::delete('/notification/{id}',[\App\Http\Controllers\NotificationController::class,'delete']);
         Route::post('/read-notification/{id}',[\App\Http\Controllers\NotificationController::class,'readNotification']);
         Route::post('/unread-notification/{id}',[\App\Http\Controllers\NotificationController::class,'unReadNotification']);
+        Route::post('/change-email-otp',[\App\Http\Controllers\SecurityController::class,'changeEmailOtp']);
+        Route::post('/change-password',[\App\Http\Controllers\SecurityController::class,'changePassword']);
+        Route::post('/change-email',[\App\Http\Controllers\SecurityController::class,'changeUserEmail']);
+        
     });
     Route::middleware(['authLess'])->group(function(){
         Route::post('/send-register-otp',[\App\Http\Controllers\CustomerAuthController::class,'sendOtp']);

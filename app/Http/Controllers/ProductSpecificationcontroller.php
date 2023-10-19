@@ -23,7 +23,7 @@ if($staus){
     return response()->json(['status'=>true,'message'=>'deleted'],200);     
     
 }else{
-    return response()->json(['status'=>false,'message'=>'Something went wrong'],83);     
+    return response()->json(['status'=>false,'message'=>'Something went wrong'],500);     
     
 }            
             }else{
@@ -55,7 +55,7 @@ if($staus){
                     return response()->json(['status'=>true,'message'=>'Added','data'=>$NewSpecification],200);     
 
                 }else{
-                    return response()->json(['status'=>false,'message'=>'Something went wrong'],83);     
+                    return response()->json(['status'=>false,'message'=>'Something went wrong'],500);     
 
                 }
             }

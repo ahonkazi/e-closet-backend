@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ApprovalController extends Controller
 {
-    //
+    // 
     public function VendorApproval(Request $request,$vendor_id){
         try {
             $vendor = User::where('id',$vendor_id)->first();

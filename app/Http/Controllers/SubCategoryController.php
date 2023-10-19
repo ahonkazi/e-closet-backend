@@ -113,7 +113,7 @@ class SubCategoryController extends Controller
                 }else{
                     if(Product::where('subcategory_id',$id)->first() == null){
                         $subCategory->delete();
-                        return response()->json(['status'=>true,'message'=>'Deleted!'],401);
+                        return response()->json(['status'=>true,'message'=>'Deleted!'],200);
                         
                     }else{
                         return response()->json(['status'=>false,'message'=>'You can not delete sub category right now!'],401);

@@ -29,7 +29,7 @@ class ProductFeatureController extends Controller
                 return response()->json(['status'=>true,'message'=>'Added','data'=>$newFeature],200);     
                 
             }else{
-                    return response()->json(['status'=>false,'message'=>'Something went wrong'],83);     
+                    return response()->json(['status'=>false,'message'=>'Something went wrong'],500);     
                 }     
         }
         }else{
@@ -51,7 +51,7 @@ class ProductFeatureController extends Controller
                     return response()->json(['status'=>true,'message'=>'deleted'],200);     
 
                 }else{
-                    return response()->json(['status'=>false,'message'=>'Something went wrong'],83);     
+                    return response()->json(['status'=>false,'message'=>'Something went wrong'],500);     
 
                 }            
             }else{

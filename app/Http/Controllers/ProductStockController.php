@@ -40,7 +40,7 @@ public function store(ProductStockStoreRequest $request,$product_id){
                         return response()->json(['status'=>true,'message'=>'Stock Created','data'=>$newStock],200);
 
                     }else{
-                        return response()->json(['status'=>false,'message'=>'Something went srong'],83);
+                        return response()->json(['status'=>false,'message'=>'Something went srong'],500);
 
                     }
                 }
@@ -62,7 +62,7 @@ public function store(ProductStockStoreRequest $request,$product_id){
                         return response()->json(['status'=>true,'message'=>'Stock Created','data'=>$newStock],200);
 
                     }else{
-                        return response()->json(['status'=>false,'message'=>'Something went srong'],83);
+                        return response()->json(['status'=>false,'message'=>'Something went srong'],500);
 
                     }
                 }

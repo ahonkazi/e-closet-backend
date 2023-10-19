@@ -31,7 +31,7 @@ public function store(ProductVariationOptionStoreRequest $request,$product_id){
                 return response()->json(['status'=>true,'data'=>$option],200);
 
             }else{
-                return response()->json(['status'=>false,'message'=>'Something went wrong!'],83);
+                return response()->json(['status'=>false,'message'=>'Something went wrong!'],500);
 
             }
         }else{
@@ -53,7 +53,7 @@ public function store(ProductVariationOptionStoreRequest $request,$product_id){
                     return response()->json(['status'=>true,'data'=>$option],200);
 
                 }else{
-                    return response()->json(['status'=>false,'message'=>'Something went wrong!'],83);
+                    return response()->json(['status'=>false,'message'=>'Something went wrong!'],500);
 
                 }
             }else{

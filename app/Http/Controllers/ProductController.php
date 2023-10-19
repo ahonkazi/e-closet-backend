@@ -104,7 +104,7 @@ class ProductController extends Controller
             return response()->json(['status'=>true,'message'=>'Product Updated','data'=>$product],200);
 
         }else{
-            return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+            return response()->json(['status'=>false,'message'=>'Something went wrong'],500);
 
         }
         }else{
@@ -130,11 +130,11 @@ class ProductController extends Controller
                       return response()->json(['status'=>true,'message'=>'updated image','data'=>$product],200);
 
                 }else{
-                    return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+                    return response()->json(['status'=>false,'message'=>'Something went wrong'],500);
 
                 }
             }else{
-                return response()->json(['status'=>false,'message'=>'Something went wrong'],83);
+                return response()->json(['status'=>false,'message'=>'Something went wrong'],500);
 
             }
         }else{

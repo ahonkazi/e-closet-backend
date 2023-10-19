@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
-    //
+    // 
     
     public function add(AddCategoryRequest $request){
         if(Category::where('name',ucfirst($request->name))->first()){
