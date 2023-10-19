@@ -13,14 +13,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-
 Route::prefix('/public')->group(function (){
     Route::get('/category',[\App\Http\Controllers\CategoryController::class,'categories']); //get approved categories
     Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'subCategories']); //get approved categories
+    Route::get('/product',[\App\Http\Controllers\ProductController::class,'getAllProducts']);
 });
-
-
 
 //VENDOR
 Route::prefix('/vendor')->group(function (){
@@ -143,6 +140,8 @@ Route::prefix('/admin')->group(function (){
 });
 //CUSTOMER
 Route::prefix('/customer')->group(function (){
+    Route::get('/product',[\App\Http\Controllers\ProductController::class,'getAllProducts']);
+
     Route::middleware(['auth:api','customer'])->group(function(){
         Route::post('/logout',[\App\Http\Controllers\CustomerAuthController::class,'logout']);
         Route::get('/notification',[\App\Http\Controllers\NotificationController::class,'notifications']);
@@ -152,6 +151,9 @@ Route::prefix('/customer')->group(function (){
         Route::post('/change-email-otp',[\App\Http\Controllers\SecurityController::class,'changeEmailOtp']);
         Route::post('/change-password',[\App\Http\Controllers\SecurityController::class,'changePassword']);
         Route::post('/change-email',[\App\Http\Controllers\SecurityController::class,'changeUserEmail']);
+        Route::post('/wishlist',[\App\Http\Controllers\WishListController::class,'add']);
+        Route::get('/wishlist',[\App\Http\Controllers\WishListController::class,'index']);
+        Route::delete('/wishlist/{product_id}',[\App\Http\Controllers\WishListController::class,'remove']);
         
     });
     Route::middleware(['authLess'])->group(function(){

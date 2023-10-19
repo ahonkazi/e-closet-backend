@@ -32,4 +32,7 @@ public function sub_category(){
     public function sub_sub_category(){
         return $this->belongsTo(SubSubCategory::class);
     }
+    public function productStock(){
+        return $this->hasMany(ProductStock::class);
+    }
 }

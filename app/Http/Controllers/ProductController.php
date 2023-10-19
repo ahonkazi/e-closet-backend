@@ -142,16 +142,9 @@ class ProductController extends Controller
 
         }
     }
-//public function deleteSample(){
-//        $oldPath = "app/public/images/ecloset_img20251693281225.jpg";
-//        $imgName = explode('/storage/',$oldPath)[1];
-//        $fullPath = storage_path($oldPath);
-//
-//            $status = unlink($fullPath);
-//            if($status){
-//                return 'ok';
-//            }
-//
-////        return $fullPath;
-//    }
+
+    public function getAllProducts(){
+        $products = Product::with('productStock','category','sub_category','sub_sub_category')->get();
+        return response()->json(['data'=>$products],200);
+    }
 }
