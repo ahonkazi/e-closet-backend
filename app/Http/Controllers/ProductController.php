@@ -194,6 +194,18 @@ class ProductController extends Controller
                        $q->whereIn('primary_option_id',$model_ids);
                    });
                }
+                  if ($request->has('stock_min')) {
+                      $stock_min = $request->stock_min;
+                      $query->whereHas('productStock',function ($q) use ($stock_min){
+                          $q->where('stock','>=',$stock_min);
+                      });
+                  }
+                        if ($request->has('stock_max')) {
+                            $stock_max = $request->stock_max;
+                            $query->whereHas('productStock',function ($q) use ($stock_max){
+                                $q->where('stock','<=',$stock_max);
+                            });
+                        }
         $products = $query->get();
         return response()->json($products,200);
     }
