@@ -8,8 +8,10 @@ use App\Http\Requests\ProductEditRequest;
 use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Product;
+use App\Models\ProductTag;
 use App\Models\ProductVariationOption;
 use App\Models\SubCategory;
+use App\Models\Tag;
 use App\Models\UserDetails;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
@@ -159,9 +161,18 @@ class ProductController extends Controller
              $query->whereIn('category_id', $categories);
         }
           if ($request->has('tag_ids')) {
-              $tags = $request->tag_ids;
-              $query->whereHas('product_tags',function ($q) use ($tags){
-                  $q->whereIn('id',$tags);
+              $tags = Tag::all()->whereIn('id',$request->tag_ids);
+              $tagIds = [];
+              foreach ($tags as $tag){
+                  array_push($tagIds,$tag->id);
+              }
+              $productTagIds = [];
+              $productTags = ProductTag::all()->whereIn('tag_id',$tagIds);
+                foreach ($productTags as $productTag){
+                    array_push($productTagIds,$productTag->id);
+                }
+              $query->whereHas('product_tags',function ($q) use ($productTagIds){
+                  $q->whereIn('id',$productTagIds);
               });
           }
 
