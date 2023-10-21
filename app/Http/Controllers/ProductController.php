@@ -8,6 +8,7 @@ use App\Http\Requests\ProductEditRequest;
 use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Product;
+use App\Models\ProductVariationOption;
 use App\Models\SubCategory;
 use App\Models\UserDetails;
 use Illuminate\Support\Facades\File;
@@ -176,28 +177,48 @@ class ProductController extends Controller
                    $q->where('price','<=',$price);
                });
            }
-           if($request->has('color_ids')){
-               $color_ids = $request->color_ids;
-               $query->whereHas('productStock',function ($q) use ($color_ids){
-                   $q->whereIn('secondary_option_id',$color_ids);
-               });
-           }
-           if($request->has('size_ids')){
-               $size_ids = $request->size_ids;
-               $query->whereHas('productStock',function ($q) use ($size_ids){
-                   $q->whereIn('primary_option_id',$size_ids);
-               });
-           }
-           if($request->has('model_ids')){
-                   $model_ids = $request->model_ids;
-                   $query->whereHas('productStock',function ($q) use ($model_ids){
-                       $q->whereIn('primary_option_id',$model_ids);
-                   });
-               }
+
+    if($request->has('size_values')){
+        $sizeValues = $request->size_values;
+        $size_idList =ProductVariationOption::whereIn('value',$sizeValues)->get(['id']);
+        $size_ids = [];
+        foreach ($size_idList as $id){
+            array_push($size_ids,$id->id);
+        }
+        $query->whereHas('productStock',function ($q) use ($size_ids){
+            $q->whereIn('primary_option_id',$size_ids);
+        });
+    }
+
+
+    if($request->has('model_values')){
+        $sizeValues = $request->model_values;
+        $size_idList =ProductVariationOption::whereIn('value',$sizeValues)->get(['id']);
+        $size_ids = [];
+        foreach ($size_idList as $id){
+            array_push($size_ids,$id->id);
+        }
+        $query->whereHas('productStock',function ($q) use ($size_ids){
+            $q->whereIn('primary_option_id',$size_ids);
+        });
+    }
+
+     if($request->has('color_values')){
+         $colorValues = $request->color_values;
+         $color_idList =ProductVariationOption::whereIn('value',$colorValues)->get(['id']);
+         $color_ids = [];
+         foreach ($color_idList as $id){
+             array_push($color_ids,$id->id);
+         }
+        $query->whereHas('productStock',function ($q) use ($color_ids){
+            $q->whereIn('secondary_option_id',$color_ids);
+        });
+     }
+
                   if ($request->has('stock_min')) {
                       $stock_min = $request->stock_min;
                       $query->whereHas('productStock',function ($q) use ($stock_min){
-                          $q->where('stock','>=',$stock_min);
+                          $q->where('stock','<=',$stock_min);
                       });
                   }
                         if ($request->has('stock_max')) {
