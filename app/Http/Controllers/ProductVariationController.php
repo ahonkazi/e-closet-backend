@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductVariationAddRequest;
 use App\Models\Product;
 use App\Models\ProductVariation;
+use App\Models\ProductVariationOption;
 use App\Models\Variation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,5 +48,29 @@ class ProductVariationController extends Controller
         }else{
             return response()->json(['status'=>false,'message'=>'Not found'],404);
         }
+    }
+
+    public function delete($product_id,$variation_id){
+        $user = Auth::user();
+        $product = Product::where('id',$product_id)->where('vendor_id',$user->id)->first();
+if($product){
+    $variation = ProductVariation::where('id',$variation_id)->where('vendor_id',$user->id)->where('product_id',$product_id)->first();
+ if($variation){
+     $options = ProductVariationOption::where('product_variation_id',$variation->id)->first();
+     if($options){
+         return response()->json(['status'=>false,'message'=>'You can not delete'],500);
+
+     }else{
+         $variation->delete();
+         return response()->json(['status'=>true,'message'=>'deleted'],200);
+     }
+ }else{
+     return response()->json(['status'=>false,'message'=>'Variation Not found'],404);
+
+ }
+}else{
+    return response()->json(['status'=>false,'message'=>'Product Not found'],404);
+
+}
     }
 }

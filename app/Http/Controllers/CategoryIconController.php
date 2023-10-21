@@ -36,4 +36,10 @@ class CategoryIconController extends Controller
       }
        
     }
+
+    public function index(){
+        $icon = CategoryIcon::all();
+        return response()->json(['data'=>$icon],200);
+
+    }
 }

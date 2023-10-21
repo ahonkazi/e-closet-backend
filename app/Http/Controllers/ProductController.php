@@ -238,7 +238,8 @@ class ProductController extends Controller
                                 $q->where('stock','<=',$stock_max);
                             });
                         }
-        $products = $query->get();
+        $per_page = $request->input('per_page',10);
+        $products = $query->paginate($per_page);
         return response()->json($products,200);
     }
 }

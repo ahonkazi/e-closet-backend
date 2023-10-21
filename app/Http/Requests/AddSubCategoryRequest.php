@@ -26,7 +26,6 @@ class AddSubCategoryRequest extends FormRequest
         return [
             //
             'name'=>'required|string|max:50|min:3',
-            'slug'=>'required|string|max:100|min:3',
             'category_id'=>'required|numeric'
         ];
     }

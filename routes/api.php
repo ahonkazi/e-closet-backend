@@ -37,12 +37,14 @@ Route::prefix('/vendor')->group(function (){
 //        CATEGORIES AND SUB CATEGORIES START
         Route::post('/category',[\App\Http\Controllers\CategoryController::class,'add']);
         Route::post('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'add']);
+        Route::get('/subsubcategory',[\App\Http\Controllers\SubSubCategoryController::class,'index']); //get all approved categories
         Route::post('/subsubcategory',[\App\Http\Controllers\SubSubCategoryController::class,'add']); //get all approved categories
         Route::delete('/subsubcategory/{id}',[\App\Http\Controllers\SubSubCategoryController::class,'delete']);
         Route::delete('/subcategory/{id}',[\App\Http\Controllers\SubCategoryController::class,'delete']);
         Route::delete('/category/{id}',[\App\Http\Controllers\CategoryController::class,'delete']);
         Route::get('/category',[\App\Http\Controllers\CategoryController::class,'allCategories']); //get all approved categories
-        Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'allSubCategories']); //get all approved categories
+            Route::get('/category/icon',[\App\Http\Controllers\CategoryIconController::class,'index']);
+            Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'allSubCategories']); //get all approved categories
 //        CATEGORIES AND SUB CATEGORIES END
 
         // PRODUCT START
@@ -59,6 +61,7 @@ Route::prefix('/vendor')->group(function (){
         Route::get('/variation/secondary',[\App\Http\Controllers\VariationController::class,'secondary']);
 //      <------------product variation---------->
         Route::post('/product/{product_id}/variation',[\App\Http\Controllers\ProductVariationController::class,'add']);
+        Route::delete('/product/{product_id}/variation/{variation_id}',[\App\Http\Controllers\ProductVariationController::class,'delete']);
         Route::get('/product/{product_id}/variation/primary',[\App\Http\Controllers\ProductVariationController::class,'primary']);
         Route::get('/product/{product_id}/variation/secondary',[\App\Http\Controllers\ProductVariationController::class,'secondary']);
         Route::post('/product/{product_id}/variation/option',[\App\Http\Controllers\ProductVariatioOptionController::class,'store']);
@@ -121,9 +124,11 @@ Route::prefix('/admin')->group(function (){
         Route::post('/category/approve/{id}',[\App\Http\Controllers\CategoryController::class,'approve']);
         Route::post('/product/approve/{id}',[\App\Http\Controllers\ProductController::class,'approve']);
 //        approvement end
-        Route::post('/category-icon',[\App\Http\Controllers\CategoryIconController::class,'add']);
-        Route::delete('/category-icon/{id}',[\App\Http\Controllers\CategoryIconController::class,'delete']);
+        Route::get('/category/icon',[\App\Http\Controllers\CategoryIconController::class,'index']);
+        Route::post('/category/icon',[\App\Http\Controllers\CategoryIconController::class,'add']);
+        Route::delete('/category/icon/{id}',[\App\Http\Controllers\CategoryIconController::class,'delete']);
         Route::post('/category',[\App\Http\Controllers\CategoryController::class,'add']);
+        Route::get('/subsubcategory',[\App\Http\Controllers\SubSubCategoryController::class,'index']); //get all approved categories
         Route::post('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'add']);
         Route::delete('/subcategory/{id}',[\App\Http\Controllers\SubCategoryController::class,'delete']);
         Route::delete('/category/{id}',[\App\Http\Controllers\CategoryController::class,'delete']);

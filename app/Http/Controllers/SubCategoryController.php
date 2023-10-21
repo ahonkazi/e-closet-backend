@@ -21,8 +21,8 @@ class SubCategoryController extends Controller
       if(SubCategory::where('name',ucfirst($request->name))->first()){
           return response()->json(['status'=>false,'message'=>$request->name.'Already exists'],401);
       }else{
-          if(SubCategory::where('slug',Str::slug($request->slug))->first()){
-              return response()->json(['status'=>false,'message'=>$request->slug.'Already exists'],401);
+          if(SubCategory::where('slug',Str::slug($request->name))->first()){
+              return response()->json(['status'=>false,'message'=>$request->name.'Already exists'],401);
           }else{
             if(Category::where('name',ucfirst($request->name))->first() == null){
                 if(Auth::user()->user_role == 2){
@@ -30,7 +30,7 @@ class SubCategoryController extends Controller
                         'category_id'=>$request->category_id,     
                 'creator_id'=>Auth::user()->id,
                 'name'=>ucfirst($request->name),
-                'slug'=>Str::slug($request->slug),
+                'slug'=>Str::slug($request->name),
            ]);
                     $ganderPerson = Str::lower(UserDetails::where('user_id',Auth::user()->id)->first()->gander) == 'male'?'his':'her';
                     $notification = Notification::create([
@@ -52,7 +52,7 @@ class SubCategoryController extends Controller
                         'category_id'=>$request->category_id,
                 'creator_id'=>Auth::user()->id,
                 'name'=>ucfirst($request->name),
-                'slug'=>Str::slug($request->slug),
+                'slug'=>Str::slug($request->name),
                 'is_approved'=>true
            ]);
 
@@ -143,11 +143,11 @@ class SubCategoryController extends Controller
         }
     }
     public function subCategories(){
-        return response()->json(['status'=>true,'data'=>SubCategory::with('category')->get()->where('is_approved',true)],200);
+        return response()->json(['status'=>true,'data'=>SubCategory::all()->where('is_approved',true)],200);
     }
     
     public function allSubCategories(){
-        return response()->json(['status'=>true,'data'=>SubCategory::with('category')->get()],200);
+        return response()->json(['status'=>true,'data'=>SubCategory::all()],200);
         
     }
 }

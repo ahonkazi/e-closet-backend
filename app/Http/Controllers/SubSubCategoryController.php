@@ -22,7 +22,7 @@ class SubSubCategoryController extends Controller
       if(SubSubCategory::where('name',ucfirst($request->name))->first()){
           return response()->json(['status'=>false,'message'=>$request->name.'Already exists'],401);
       }else{
-          if(SubSubCategory::where('slug',Str::slug($request->slug))->first()){
+          if(SubSubCategory::where('slug',Str::slug($request->name))->first()){
               return response()->json(['status'=>false,'message'=>$request->slug.'Already exists'],401);
           }else{
             if(Category::where('name',ucfirst($request->name))->first() == null){
@@ -31,7 +31,7 @@ class SubSubCategoryController extends Controller
                  'sub_category_id'=>$request->subcategory_id,
                 'creator_id'=>Auth::user()->id,
                 'name'=>ucfirst($request->name),
-                'slug'=>Str::slug($request->slug),
+                'slug'=>Str::slug($request->name),
            ]);
                     $ganderPerson = Str::lower(UserDetails::where('user_id',Auth::user()->id)->first()->gander) == 'male'?'his':'her';
                     $notification = Notification::create([
@@ -53,7 +53,7 @@ class SubSubCategoryController extends Controller
                         'sub_category_id'=>$request->subcategory_id,
                 'creator_id'=>Auth::user()->id,
                 'name'=>ucfirst($request->name),
-                'slug'=>Str::slug($request->slug),
+                'slug'=>Str::slug($request->name),
                 'is_approved'=>true
            ]);
 
@@ -143,5 +143,7 @@ class SubSubCategoryController extends Controller
             
         }
     }
-
+    public function index(){
+            return response()->json(['status'=>true,'data'=>SubSubCategory::all()],200);
+    }
 }
