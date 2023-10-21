@@ -75,11 +75,11 @@ class ProductController extends Controller
                         return response()->json(['status'=>true,'message'=>'Product Approved!','data'=>$product],200);
 
                     }else{
-                        return response()->json(['status'=>false,'message'=>'Something went wrong'],401);
+                        return response()->json(['status'=>false,'message'=>'Something went wrong'],500);
 
                     }
                 }else{
-                    return response()->json(['status'=>false,'message'=>'Product Already added'],401);
+                    return response()->json(['status'=>false,'message'=>'Product Already approved'],200);
 
                 }
         }else{
@@ -146,5 +146,55 @@ class ProductController extends Controller
     public function getAllProducts(){
         $products = Product::with('productStock','category','sub_category','sub_sub_category')->get();
         return response()->json(['data'=>$products],200);
+    }
+
+    public function search(Request $request){
+        $query = Product::query()->where('is_approved',1);
+        if($request->has('q')){
+            $query->where('title','like','%'.$request->q.'%')->orWhere('discription','like','%'.$request->q.'%');
+        }
+        if ($request->has('category_ids')) {
+             $categories = $request->category_ids;
+             $query->whereIn('category_id', $categories);
+        }
+          if ($request->has('tag_ids')) {
+              $tags = $request->tag_ids;
+              $query->whereHas('product_tags',function ($q) use ($tags){
+                  $q->whereIn('id',$tags);
+              });
+          }
+
+          if ($request->has('price_min')) {
+              $price = $request->price_min;
+              $query->whereHas('productStock',function ($q) use ($price){
+                  $q->where('price','>=',$price);
+              });
+          }
+           if ($request->has('price_max')) {
+               $price = $request->price_max;
+               $query->whereHas('productStock',function ($q) use ($price){
+                   $q->where('price','<=',$price);
+               });
+           }
+           if($request->has('color_ids')){
+               $color_ids = $request->color_ids;
+               $query->whereHas('productStock',function ($q) use ($color_ids){
+                   $q->whereIn('secondary_option_id',$color_ids);
+               });
+           }
+           if($request->has('size_ids')){
+               $size_ids = $request->size_ids;
+               $query->whereHas('productStock',function ($q) use ($size_ids){
+                   $q->whereIn('primary_option_id',$size_ids);
+               });
+           }
+           if($request->has('model_ids')){
+                   $model_ids = $request->model_ids;
+                   $query->whereHas('productStock',function ($q) use ($model_ids){
+                       $q->whereIn('primary_option_id',$model_ids);
+                   });
+               }
+        $products = $query->get();
+        return response()->json($products,200);
     }
 }

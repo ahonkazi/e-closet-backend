@@ -35,4 +35,8 @@ public function sub_category(){
     public function productStock(){
         return $this->hasMany(ProductStock::class);
     }
+
+    public function product_tags(){
+        return $this->hasMany(ProductTag::class);
+    }
 }
