@@ -22,7 +22,7 @@ public function store(ProductStockStoreRequest $request,$product_id){
         $secondaryOption = ProductVariationOption::where('id',$request->secondary_option_id)->where('vendor_id',$user->id)->where('is_primary',0)->first();
         if($primaryOption){
             if($secondaryOption){
-                $stock = ProductStock::where('primary_option_id',$request->primary_option_id)->where('primary_option_id',$request->primary_option_id)->where('vendor_id',$user->id)->first();
+                $stock = ProductStock::where('primary_option_id',$request->primary_option_id)->where('secondary_option_id',$request->secondary_option_id)->where('vendor_id',$user->id)->first();
                 if($stock){
                     return response()->json(['status'=>false,'message'=>'Already exists'],403);
 

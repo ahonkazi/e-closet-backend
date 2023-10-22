@@ -35,19 +35,14 @@ class ProductVariationController extends Controller
     
     public function primary($product_id){
         $data = ProductVariation::with('variation')->where('product_id',$product_id)->where('vendor_id',Auth::user()->id)->where('is_primary',1)->first();
-       if($data){
            return response()->json(['status'=>true,'data'=>$data],200);
-       }else{
-           return response()->json(['status'=>false,'message'=>'Not found'],404);
-       }
+
     }
      public function secondary($product_id){
         $data = ProductVariation::with('variation')->where('product_id',$product_id)->where('vendor_id',Auth::user()->id)->where('is_primary',0)->first();
-        if($data){
+
             return response()->json(['status'=>true,'data'=>$data],200);
-        }else{
-            return response()->json(['status'=>false,'message'=>'Not found'],404);
-        }
+
     }
 
     public function delete($product_id,$variation_id){

@@ -9,5 +9,7 @@ class DisplayVariation extends Model
 {
     use HasFactory;
     protected $fillable = ['name','is_primary'];
-    
+    public function options(){
+        return $this->hasMany(DisplayVariationOption::class);
+    }
 }

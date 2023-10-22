@@ -154,26 +154,32 @@ class ProductController extends Controller
     public function search(Request $request){
         $query = Product::query()->where('is_approved',1);
         if($request->has('q')){
-            $query->where('title','like','%'.$request->q.'%')->orWhere('discription','like','%'.$request->q.'%');
+            $query->where('discription','like','%'.$request->q.'%')->orWhere('title','like','%'.$request->q.'%');
         }
+
         if ($request->has('category_ids')) {
-             $categories = $request->category_ids;
-             $query->whereIn('category_id', $categories);
+            if(is_array($request->category_ids)){
+                $categories = $request->category_ids;
+                $query->whereIn('category_id', $categories);
+            }
+
         }
           if ($request->has('tag_ids')) {
-              $tags = Tag::all()->whereIn('id',$request->tag_ids);
-              $tagIds = [];
-              foreach ($tags as $tag){
-                  array_push($tagIds,$tag->id);
-              }
+           if(is_array($request->tag_ids)){
+               $tags = Tag::all()->whereIn('id',$request->tag_ids);
+               $tagIds = [];
+               foreach ($tags as $tag){
+                   array_push($tagIds,$tag->id);
+               }
               $productTagIds = [];
-              $productTags = ProductTag::all()->whereIn('tag_id',$tagIds);
-                foreach ($productTags as $productTag){
-                    array_push($productTagIds,$productTag->id);
-                }
+               $productTags = ProductTag::all()->whereIn('tag_id',$tagIds);
+               foreach ($productTags as $productTag){
+                   array_push($productTagIds,$productTag->id);
+               }
               $query->whereHas('product_tags',function ($q) use ($productTagIds){
                   $q->whereIn('id',$productTagIds);
               });
+           }
           }
 
           if ($request->has('price_min')) {
@@ -189,41 +195,35 @@ class ProductController extends Controller
                });
            }
 
-    if($request->has('size_values')){
-        $sizeValues = $request->size_values;
-        $size_idList =ProductVariationOption::whereIn('value',$sizeValues)->get(['id']);
-        $size_ids = [];
-        foreach ($size_idList as $id){
-            array_push($size_ids,$id->id);
-        }
+    if($request->has('primary_values')){
+        if(is_array($request->primary_values)){
+            $sizeValues = $request->primary_values;
+            $size_idList =ProductVariationOption::whereIn('value',$sizeValues)->get(['id']);
+            $size_ids = [];
+            foreach ($size_idList as $id){
+                array_push($size_ids,$id->id);
+            }
         $query->whereHas('productStock',function ($q) use ($size_ids){
             $q->whereIn('primary_option_id',$size_ids);
         });
-    }
-
-
-    if($request->has('model_values')){
-        $sizeValues = $request->model_values;
-        $size_idList =ProductVariationOption::whereIn('value',$sizeValues)->get(['id']);
-        $size_ids = [];
-        foreach ($size_idList as $id){
-            array_push($size_ids,$id->id);
         }
-        $query->whereHas('productStock',function ($q) use ($size_ids){
-            $q->whereIn('primary_option_id',$size_ids);
-        });
     }
 
-     if($request->has('color_values')){
-         $colorValues = $request->color_values;
-         $color_idList =ProductVariationOption::whereIn('value',$colorValues)->get(['id']);
-         $color_ids = [];
-         foreach ($color_idList as $id){
-             array_push($color_ids,$id->id);
-         }
+
+
+
+     if($request->has('secondary_values')){
+         if(is_array($request->secondary_values)){
+            $colorValues = $request->secondary_values;
+            $color_idList =ProductVariationOption::whereIn('value',$colorValues)->get(['id']);
+            $color_ids = [];
+            foreach ($color_idList as $id){
+                array_push($color_ids,$id->id);
+            }
         $query->whereHas('productStock',function ($q) use ($color_ids){
             $q->whereIn('secondary_option_id',$color_ids);
         });
+        }
      }
 
                   if ($request->has('stock_min')) {
@@ -238,6 +238,7 @@ class ProductController extends Controller
                                 $q->where('stock','<=',$stock_max);
                             });
                         }
+
         $per_page = $request->input('per_page',10);
         $products = $query->paginate($per_page);
         return response()->json($products,200);

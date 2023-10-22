@@ -18,6 +18,8 @@ Route::prefix('/public')->group(function (){
     Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'subCategories']); //get approved categories
     Route::get('/product',[\App\Http\Controllers\ProductController::class,'getAllProducts']);
     Route::get('/search',[\App\Http\Controllers\ProductController::class,'search']);
+    Route::get('/search/filters',[\App\Http\Controllers\SearchFilterController::class,'getFilters']);
+
 });
 
 //VENDOR
