@@ -81,4 +81,28 @@ public function store(ProductStockStoreRequest $request,$product_id){
             return response()->json(['status'=>true,'data'=>ProductStock::with('primary_option:id,value','secondary_option:id,value,color_code,product_image')->where('product_id',$product->id)->where('vendor_id',Auth::user()->id)->get()],200);
         }        
     }
+
+   public function delete($product_id,$stock_id){
+    $user = Auth::user();
+    $product = Product::where('id',$product_id)->where('vendor_id',$user->id)->first();
+    if($product){
+        $stock = ProductStock::where('id',$stock_id)->where('product_id',$product_id)->where('vendor_id',$user->id)->first();
+    if($stock){
+            $status = $stock->delete();
+            if($status){
+                return response()->json(['status'=>false,'message'=>'Deleted'],200);
+
+            }else{
+                return response()->json(['status'=>false,'message'=>'Something went wrong'],500);
+
+            }
+    }else{
+        return response()->json(['status'=>false,'message'=>'No Stock Found'],404);
+
+    }
+    }else{
+        return response()->json(['status'=>false,'message'=>'No Product Found'],404);
+
+    }
+}
 }

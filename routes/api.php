@@ -46,7 +46,6 @@ Route::prefix('/vendor')->group(function (){
             Route::get('/category/icon',[\App\Http\Controllers\CategoryIconController::class,'index']);
             Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'allSubCategories']); //get all approved categories
 //        CATEGORIES AND SUB CATEGORIES END
-
         // PRODUCT START
         Route::post('/product',[\App\Http\Controllers\ProductController::class,'store']);
         Route::get('/product',[\App\Http\Controllers\ProductController::class,'vendorProducts']);
@@ -72,7 +71,6 @@ Route::prefix('/vendor')->group(function (){
         Route::post('/product/{product_id}/tag',[\App\Http\Controllers\ProductTagController::class,'add']);
         Route::delete('/product/{product_id}/tag/{tag_id}',[\App\Http\Controllers\ProductTagController::class,'remove']);
         Route::get('/product/{product_id}/tag',[\App\Http\Controllers\ProductTagController::class,'index']);
-        
         // PRODUCT TAGS END
 
 
@@ -80,6 +78,8 @@ Route::prefix('/vendor')->group(function (){
         // PRODUCT STOCK START
         Route::post('/product/{product_id}/stock',[\App\Http\Controllers\ProductStockController::class,'store']);
         Route::get('/product/{product_id}/stock',[\App\Http\Controllers\ProductStockController::class,'index']);
+        Route::delete('/product/{product_id}/stock/{stock_id}',[\App\Http\Controllers\ProductStockController::class,'delete']);
+
         // PRODUCT STOCK END
         //    PRODUCT SPESIFICATIONS START
         Route::post('/product/{product_id}/specification',[\App\Http\Controllers\ProductSpecificationcontroller::class,'add']);

@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Variation extends Model
+class DisplayVariation extends Model
 {
     use HasFactory;
-    protected $fillable =['name','vendor_id','is_primary','display_variation_id'];  
+    protected $fillable = ['name','is_primary'];
+    
 }
