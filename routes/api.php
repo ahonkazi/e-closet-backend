@@ -162,6 +162,8 @@ Route::prefix('/customer')->group(function (){
         Route::post('/wishlist',[\App\Http\Controllers\WishListController::class,'add']);
         Route::get('/wishlist',[\App\Http\Controllers\WishListController::class,'index']);
         Route::delete('/wishlist/{product_id}',[\App\Http\Controllers\WishListController::class,'remove']);
+        Route::post('/address',[\App\Http\Controllers\CustomerAddressController::class,'create']);
+        Route::delete('/address/{address_id}',[\App\Http\Controllers\CustomerAddressController::class,'delete']);
         
     });
     Route::middleware(['authLess'])->group(function(){
