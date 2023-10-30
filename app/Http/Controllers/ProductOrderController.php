@@ -114,7 +114,8 @@ class ProductOrderController extends Controller
                             if (isset($item['quantity'])) {
                                 if ($productStock->stock >= (integer)$item['quantity']) {
                                     //go ahead
-                                    $totalPrice = $totalPrice + ($productStock->price * (integer)$item['quantity']);
+                                    $discount = (($productStock->price / 100) * $productStock->discount_in_percent) * (integer)$item['quantity'];
+                                    $totalPrice = $totalPrice + (($productStock->price * (integer)$item['quantity']) - $discount);
                                 } else {
                                     array_push($errors, ['message' => 'Stock limited please order less than ' . $productStock->stock . ' products']);
 
@@ -135,8 +136,8 @@ class ProductOrderController extends Controller
                             } else {
                                 if (isset($item['quantity'])) {
                                     if ($productStock->stock >= (double)$item['quantity']) {
-                                        $totalPrice = $totalPrice + ($productStock->price * (integer)$item['quantity']);
-                                    } else {
+                                        $discount = (($productStock->price / 100) * $productStock->discount_in_percent) * (integer)$item['quantity'];
+                                        $totalPrice = $totalPrice + (($productStock->price * (integer)$item['quantity']) - $discount);                                    } else {
                                         array_push($errors, ['message' => 'Stock limited please order less than ' . $productStock->stock . ' products']);
 
                                     }
@@ -202,7 +203,9 @@ class ProductOrderController extends Controller
                             $SecondaryOption = ProductVariationOption::where('id', $item['secondary_option_id'])->where('is_primary', 0)->first();
                             if ($PrimaryOption && $SecondaryOption) {
                                 $combination = $PrimaryOption->value . ' + ' . $SecondaryOption->value;
+
                             }
+
                         } else if (isset($item['primary_option_id'])) {
                             $PrimaryOption = ProductVariationOption::where('id', $item['primary_option_id'])->where('is_primary', 1)->first();
                             if ($PrimaryOption) {
@@ -216,7 +219,17 @@ class ProductOrderController extends Controller
                             'combination' => $combination,
                             'quantity' => $item['quantity']
                         ]);
-                        if (!$order_item) {
+                        if ($order_item) {
+                            if (isset($item['primary_option_id']) && isset($item['secondary_option_id'])) {
+                                $productStock = ProductStock::where('product_id', $item['product_id'])->where('primary_option_id', $item['primary_option_id'])->where('secondary_option_id', $item['secondary_option_id'])->first();
+                                $productStock->update(['stock' => $productStock->stock - (integer)$item['quantity']]);
+
+                            } else if (isset($item['primary_option_id'])) {
+                                $productStock = ProductStock::where('product_id', $item['product_id'])->where('primary_option_id', $item['primary_option_id'])->first();
+                                $productStock->update(['stock' => $productStock->stock - (integer)$item['quantity']]);
+
+                            }
+                        } else {
                             $order->delete();
                             $shipping->delete();
                             return response()->json(['status' => false, 'message' => 'Something went wrong'], 500);
@@ -245,21 +258,21 @@ class ProductOrderController extends Controller
         $order = Order::where('id', $order_id)->where('customer_id', $user_id)->first();
         if ($order) {
             if ($order->order_status == 'Pending') {
-                
+
                 $shipping = ShippingAddress::where('id', $order->shipping_id)->first();
                 $orderProducts = OrderItem::all()->where('order_id', $order->id);
                 foreach ($orderProducts as $item) {
                     $item->delete();
                 }
-                $orderDeleteStatus = $order->delete(); 
+                $orderDeleteStatus = $order->delete();
                 if ($orderDeleteStatus) {
                     $shippingDeleteStatus = $shipping->delete();
-                    if($shippingDeleteStatus){
+                    if ($shippingDeleteStatus) {
                         return response()->json(['status' => true, 'message' => 'Order removed'], 200);
-                        
-                    }else{
+
+                    } else {
                         return response()->json(['status' => false, 'message' => 'Something went wrong'], 500);
-                        
+
                     }
 
                 } else {
@@ -274,9 +287,10 @@ class ProductOrderController extends Controller
             return response()->json(['status' => false, 'message' => 'No order found with this id'], 404);
         }
     }
-    
-    public function myOrders(){
-        $data = Order::all()->where('customer_id',Auth::user()->id);
-        return response()->json(['status'=>true,'data'=>$data],200);
+
+    public function myOrders()
+    {
+        $data = Order::all()->where('customer_id', Auth::user()->id);
+        return response()->json(['status' => true, 'data' => $data], 200);
     }
 }
