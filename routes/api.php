@@ -138,6 +138,10 @@ Route::prefix('/admin')->group(function (){
         Route::get('/subcategory',[\App\Http\Controllers\SubCategoryController::class,'allSubCategories']); //get all approved categories
         Route::post('/subsubcategory',[\App\Http\Controllers\SubSubCategoryController::class,'add']); //get all approved categories
         Route::delete('/subsubcategory/{id}',[\App\Http\Controllers\SubSubCategoryController::class,'delete']);
+//   orders
+        Route::put('/order/{order_id}',[\App\Http\Controllers\ProductOrderController::class,'change_status']);
+        Route::get('/order',[\App\Http\Controllers\ProductOrderController::class,'orders']);
+
     });
     Route::middleware(['authLess'])->group(function(){
         Route::post('/send-register-otp',[\App\Http\Controllers\AdminAuthcontroller::class,'sendOtp']);
@@ -168,6 +172,12 @@ Route::prefix('/customer')->group(function (){
         Route::get('/order',[\App\Http\Controllers\ProductOrderController::class,'myOrders']);
         Route::delete('/order/{order_id}',[\App\Http\Controllers\ProductOrderController::class,'removeOrder']);
         
+//        product review
+        Route::post('/product/{product_id}/review',[\App\Http\Controllers\ProductReviewController::class,'add']);
+        Route::put('/review/{review_id}',[\App\Http\Controllers\ProductReviewController::class,'edit']);
+        Route::delete('/review/{review_id}',[\App\Http\Controllers\ProductReviewController::class,'delete']);
+        Route::get('/review',[\App\Http\Controllers\ProductReviewController::class,'myReviews']);
+
     });
     Route::middleware(['authLess'])->group(function(){
         Route::post('/send-register-otp',[\App\Http\Controllers\CustomerAuthController::class,'sendOtp']);

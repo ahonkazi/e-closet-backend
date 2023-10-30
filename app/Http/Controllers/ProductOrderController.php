@@ -137,7 +137,8 @@ class ProductOrderController extends Controller
                                 if (isset($item['quantity'])) {
                                     if ($productStock->stock >= (double)$item['quantity']) {
                                         $discount = (($productStock->price / 100) * $productStock->discount_in_percent) * (integer)$item['quantity'];
-                                        $totalPrice = $totalPrice + (($productStock->price * (integer)$item['quantity']) - $discount);                                    } else {
+                                        $totalPrice = $totalPrice + (($productStock->price * (integer)$item['quantity']) - $discount);
+                                    } else {
                                         array_push($errors, ['message' => 'Stock limited please order less than ' . $productStock->stock . ' products']);
 
                                     }
@@ -292,5 +293,38 @@ class ProductOrderController extends Controller
     {
         $data = Order::all()->where('customer_id', Auth::user()->id);
         return response()->json(['status' => true, 'data' => $data], 200);
+    }
+     public function orders()
+     {
+         $data = Order::all();
+         return response()->json(['status' => true, 'data' => $data], 200);
+     }
+
+    public function change_status(Request $request, $order_id){
+        $order = Order::where('id',$order_id)->first();
+        if($order){
+            if($request->has('order_status')){
+                $allStatus = ['Pending','Delivered','Processing'];
+                if(in_array($request->order_status,$allStatus)){
+                    $changeStatus = $order->update(['order_status'=>$request->order_status]);
+                    if($changeStatus){
+                        return response()->json(['status' => true, 'message' => 'Order status updated to '.$request->order_status,'data'=>$order], 200);
+
+                    }else{
+                        return response()->json(['status' => false, 'message' => 'Something went wrong'], 500);
+
+                    }
+                }else{
+                    return response()->json(['status' => false, 'message' => 'status must be Pending,Delivered or Processing'], 403);
+
+                }
+            }else{
+                return response()->json(['status' => false, 'message' => 'order_status required'], 403);
+
+            }
+        }else{
+            return response()->json(['status' => false, 'message' => 'No order found with this id'], 404);
+
+        }
     }
 }
